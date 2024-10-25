@@ -18,7 +18,6 @@ from django.contrib.auth import authenticate, login as django_login
 from django.contrib import messages
 from django.contrib.auth.models import User
 import subprocess
-from ursina import *
 
 MONGO_HOST = 'localhost'
 MONGO_PORT = 27017
@@ -28,14 +27,13 @@ client = MongoClient(MONGO_HOST, MONGO_PORT)
 db1 = client['joueur']
 collection_user1 = db1['jeu']
 
+def test(request):
+    return render(request, 'website/test.html')
 def map(request): 
     return render(request, 'website/map.html')
 
 def techniques_apprentissage(request):
     return render(request, 'website/techniques_apprentissage.html')
-
-def test(request): 
-    return render(request, 'website/testt.html')
 
 def game3d(request): 
     return render(request, 'website/game3d.html')

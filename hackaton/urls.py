@@ -15,7 +15,7 @@ urlpatterns = [
     path('login/', views.profile, name='profile'),
     path('missions/', views.missions, name='missions'),
     path('game3d/', views.game3d, name='game3d'),
-    path('testt/', views.test, name='testt'),
     path('techniques-apprentissage/', views.techniques_apprentissage, name='techniques_apprentissage'),
     path('map/', views.map, name='map'),
+    path('test/', views.test, name='test'),
 ]
