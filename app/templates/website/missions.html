@@ -141,7 +141,38 @@
         .close-doors .door-right {
             transform: translateX(0);
         }
+        
+        .locked {
+            background-color: #ccc; /* Couleur pour indiquer que le niveau est verrouillé */
+            cursor: not-allowed;
+        }
+        
+        .reset-button {
+            position: absolute;
+            top: 20px;
+            right: 20px; /* Positionné en haut à droite */
+            padding: 10px 20px;
+            background-color: #FF4500;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            font-size: 1rem;
+            cursor: pointer;
+            transition: background-color 0.3s, transform 0.2s;
+            box-shadow: 0 8px 15px rgba(0, 0, 0, 0.1);
+        }
+        
+        .reset-button:hover {
+            background-color: #FF6347;
+            transform: scale(1.05);
+        }
 
+        .mission-completed {
+            background-color: #4CAF50; /* Couleur verte pour indiquer la validation */
+            color: white;
+            cursor: default;
+        }
+        
     </style>
 </head>
 <body>
@@ -149,6 +180,8 @@
     <!-- Bouton retour en haut à gauche -->
     <a href="{% url 'page_accueil' %}" class="back-button">Retour</a>
 
+    <button id="reset-button" class="reset-button"> Reinitialiser la progression</button>
+    
     <h1>Carte des missions</h1>
 
     <div class="mission-map">
@@ -186,25 +219,7 @@
     <!-- Audio pour le bruit de fermeture des portes -->
     <audio id="doorSound" src="{% static 'sounds/door-close.mp3' %}" preload="auto"></audio>
 
-    <script>
-        // Fonction pour rediriger vers une autre page
-        document.querySelectorAll('.mission-circle').forEach(circle => {
-            circle.addEventListener('click', function() {
-                const mission = this.getAttribute('data-mission'); // Récupérer le numéro de mission
-                
-                // Jouer le son des portes qui se ferment
-                const doorSound = document.getElementById('doorSound');
-                doorSound.play();
+    <script src="{% static 'js/carte.js' %}"></script>
 
-                // Ajouter la classe pour fermer les portes
-                document.body.classList.add('close-doors');
-
-                // Redirection après la fin de l'animation des portes
-                setTimeout(() => {
-                    window.location.href = "/game3d?mission=" + mission;
-                }, 1000); // Délai de 1 seconde pour correspondre à la durée de l'animation
-            });
-        });
-    </script>
 </body>
 </html>

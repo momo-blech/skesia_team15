@@ -1,17 +1,17 @@
 from django.shortcuts import render, redirect, get_object_or_404
-from langchain_community.llms import Ollama
+# from langchain_community.llms import Ollama
 from django.urls import reverse
-from pymongo import MongoClient
+# from pymongo import MongoClient
 from bson import ObjectId
 from django.views.decorators.csrf import csrf_exempt
 import io
 import os
-import google.generativeai as genai
+# import google.generativeai as genai
 from PIL import Image
 from base64 import b64decode
 from django.http import JsonResponse
-import google.generativeai as genai
-from sympy import sympify
+# import google.generativeai as genai
+# from sympy import sympify
 from django.http import HttpResponse
 import random
 from django.contrib.auth import authenticate, login as django_login
@@ -19,31 +19,33 @@ from django.contrib import messages
 from django.contrib.auth.models import User
 import subprocess
 
-MONGO_HOST = 'localhost'
+"""MONGO_HOST = 'localhost'
 MONGO_PORT = 27017
 
 MONGO_COLLECTION_USER = 'jeu'
 client = MongoClient(MONGO_HOST, MONGO_PORT)
 db1 = client['joueur']
-collection_user1 = db1['jeu']
+collection_user1 = db1['jeu']"""
+
 
 def test(request):
     return render(request, 'website/test.html')
-def map(request): 
-    return render(request, 'website/map.html')
 
 def techniques_apprentissage(request):
     return render(request, 'website/techniques_apprentissage.html')
 
-def game3d(request): 
+
+def game3d(request):
     return render(request, 'website/game3d.html')
+
+
 def dashboard(request):
     # Vérifiez si l'utilisateur est connecté en vérifiant la session
     if 'user_email' in request.session:
         email = request.session['user_email']
         # Vous pouvez rechercher les informations utilisateur dans la base de données en utilisant l'email
         user = collection_user1.find_one({'email': email})
-        
+
         # Si l'utilisateur est trouvé, affichez les informations du tableau de bord
         if user:
             return render(request, 'website/dashboard.html', {'user': user})
@@ -51,6 +53,7 @@ def dashboard(request):
         # Si l'utilisateur n'est pas connecté, rediriger vers la page de connexion
         messages.error(request, "Vous devez vous connecter pour accéder à votre tableau de bord.")
         return redirect('login')
+
 
 def profile(request):
     user = None
@@ -64,7 +67,8 @@ def profile(request):
         return render(request, 'website/dashboard.html', {'user': user})
     else:
         return redirect('login')
-    
+
+
 def login(request):
     if request.method == 'POST':
         email = request.POST['email']
@@ -81,6 +85,8 @@ def login(request):
             messages.error(request, "Email ou mot de passe incorrect.")
 
     return render(request, 'website/login.html')
+
+
 # Générer une opération mathématique en fonction du niveau
 def generer_operation(niveau):
     if niveau < 3:
@@ -108,6 +114,7 @@ def generer_operation(niveau):
         operation = f"{nombre1} / {nombre2}"
         resultat = nombre1 // nombre2  # Division entière
     return operation, resultat
+
 
 def game1(request):
     # Récupérer l'email de l'utilisateur à partir de la session
@@ -147,7 +154,8 @@ def game1(request):
             return redirect('game1')
         else:
             # Afficher les résultats pour déboguer
-            return HttpResponse(f"Désolé, réponse incorrecte. Résultat attendu: {resultat_attendu}, votre réponse: {reponse_utilisateur}")
+            return HttpResponse(
+                f"Désolé, réponse incorrecte. Résultat attendu: {resultat_attendu}, votre réponse: {reponse_utilisateur}")
 
     else:
         # Générer une nouvelle opération seulement si ce n'est pas une soumission POST
@@ -163,6 +171,7 @@ def game1(request):
         'operation': operation,
     })
 
+
 def page_accueil(request):
     user = None  # Par défaut, aucun utilisateur
 
@@ -173,12 +182,17 @@ def page_accueil(request):
         user = collection_user1.find_one({'_id': ObjectId(user_id)})
 
     return render(request, 'website/page_accueil.html', {'user': user})
+
+
 def missions(request):
     return render(request, 'website/missions.html')
+
+
 def logout(request):
     # Déconnexion de l'utilisateur
     request.session.flush()
     return redirect('page_accueil')
+
 
 def register(request):
     if request.method == 'POST':
@@ -196,10 +210,11 @@ def register(request):
 
         # Stocker l'email dans la session
         request.session['email'] = email
-        
+
         return redirect('page_accueil')  # Rediriger vers la vue du jeu
 
     return render(request, 'website/register.html')
+
 
 def generate_equation(request):
     # Configuration de l'API
@@ -211,10 +226,10 @@ def generate_equation(request):
 
     # Prompt pour générer une équation simple
     prompt = "Generate a random simple math equation to solve"
-    
+
     # Génération de contenu via le modèle
     response = model.generate_content([prompt])
-    
+
     # Récupérer le texte généré (l'équation)
     equation = response.text  # Assurez-vous que cette structure est correcte selon votre version
 
@@ -251,6 +266,3 @@ def generate_equation(request):
 
     # Si ce n'est pas une requête POST, rendre le template HTML
     return render(request, 'website/dessin.html')
-
-
-
