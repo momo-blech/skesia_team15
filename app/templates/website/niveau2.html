@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Three.js Scene</title>
+    {% load static %}
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        html, body {
+            width: 100%;
+            height: 100%;
+            overflow: hidden;
+        }
+
+        .fullscreen-message {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background-color: rgba(0, 0, 0, 0.8);
+            color: white;
+            padding: 20px;
+            border-radius: 5px;
+            font-size: 1.2rem;
+            z-index: 1000;
+            text-align: center;
+        }
+    </style>
+</head>
+<body>
+    <div id="fullscreenMessage" class="fullscreen-message">
+        Appuyez sur <strong>F11</strong> pour passer en plein écran
+    </div>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/loaders/GLTFLoader.js"></script>
+    <script src="{% static 'js/character.js' %}"></script>
+    <script src="{% static 'js/controls.js' %}"></script>
+    <script src="{% static 'js/camera.js' %}"></script>
+    <script src="{% static 'js/mouseControls.js' %}"></script>
+    <script src="{% static 'js/collision.js' %}"></script>
+    <script src="{% static 'js/bookToggle.js' %}"></script>
+    <script src="{% static 'js/door2.js' %}"></script>
+    <script src="{% static 'js/doorOperation2.js' %}"></script>
+    <script src="{% static 'js/starrySky.js' %}"></script>
+    <script src="{% static 'js/wall2.js' %}"></script>
+    <script src="{% static 'js/fairy.js' %}"></script>
+    <script src="{% static 'js/scene3.js' %}"></script>
+    <script src="{% static 'js/son.js' %}"></script>
+
+    <script>
+        setTimeout(() => {
+            const fullscreenMessage = document.getElementById("fullscreenMessage");
+            if (fullscreenMessage) {
+                fullscreenMessage.style.display = 'none';
+            }
+        }, 5000);
+
+        function requestFullScreenOnInteraction() {
+            if (!document.fullscreenElement) {
+                document.documentElement.requestFullscreen().catch((err) => {
+                    console.error(`Erreur lors de l'activation du plein écran : ${err.message}`);
+                });
+            }
+        }
+
+        document.addEventListener('click', requestFullScreenOnInteraction, { once: true });
+        document.addEventListener('keydown', requestFullScreenOnInteraction, { once: true });
+    </script>
+</body>
+</html>

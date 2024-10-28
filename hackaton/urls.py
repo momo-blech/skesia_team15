@@ -14,7 +14,8 @@ urlpatterns = [
     path('profile/', views.profile, name='profile'),
     path('login/', views.profile, name='profile'),
     path('missions/', views.missions, name='missions'),
-    path('game3d/', views.game3d, name='game3d'),
     path('techniques-apprentissage/', views.techniques_apprentissage, name='techniques_apprentissage'),
-    path('test/', views.test, name='test'),
+    path('niveau1/', views.niveau1, name='niveau1'),
+    path('niveau2/', views.niveau2, name='niveau2'),
+    path('avatar/', views.avatar, name='avatar'),
 ]

@@ -38,9 +38,7 @@ function setupControls(character) {
             case 'b': // Ouvrir/fermer le livre avec la touche "B"
                 toggleBook(); // Appel à la fonction de bookToggle.js
                 break;
-            case 'f': // Entrer la réponse avec la touche "F"
-                submitAnswer(); // Fonction pour vérifier la réponse
-                break;
+
         }
     });
 

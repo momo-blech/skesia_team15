@@ -1,6 +1,6 @@
 let scene, camera, renderer, character;
 let mazeWalls = []; // Tableau pour stocker les murs de la pièce
-let door; // Variable pour la porte
+let door2; // Variable pour la porte
 let clock = new THREE.Clock(); // Initialiser le clock pour le delta time
 
 function init() {
@@ -35,14 +35,23 @@ function init() {
         setupControls(character);
         setupCameraFollow(character);
 
+        setupFairy(scene);
+
         // Créer et positionner la porte dans le mur avant
-        door = createDoor(); // Créer la porte en appelant createDoor()
-        door.position.set(0, 1.4, 5); // Position de la porte dans le mur avant
-        scene.add(door); // Ajouter la porte à la scène
+        door2 = createDoor(); // Créer la porte en appelant createDoor()
+        door2.position.set(0, 1.4, 5); // Position de la porte dans le mur avant
+        scene.add(door2); // Ajouter la porte à la scène
 
         setupMouseControls(camera); // Initialiser les contrôles de la souris
+
         animate(); // Démarrer l'animation une fois les éléments chargés
     });
+
+    // Appel initial pour s'assurer que la scène est correctement dimensionnée
+    onWindowResize();
+
+    // Écouteur pour redimensionner la fenêtre
+    window.addEventListener('resize', onWindowResize, false);
 }
 
 function animate() {
@@ -53,16 +62,30 @@ function animate() {
 
     updateControls(character, camera, delta);
 
-    if (character && Array.isArray(mazeWalls) && door) {
-        checkCollisions(character, mazeWalls, door);
+    if (character && Array.isArray(mazeWalls) && door2) {
+        checkCollisions(character, mazeWalls, door2);
         updateMouseControls(camera, character);
 
         // Appeler la fonction d'indication pour afficher le message sur la porte
-        displayOperationHint(door, character);
+        displayOperationHint(door2, character);
     }
 
     updateCamera(mazeWalls); // Met à jour la caméra en fonction des collisions
+    updateFairy(character, camera, delta);
+    renderer.render(scene, camera);
+}
 
+// Fonction de redimensionnement pour ajuster le rendu et la caméra
+function onWindowResize() {
+    // Met à jour les dimensions de la caméra en fonction de la taille de la fenêtre
+    camera.aspect = window.innerWidth / window.innerHeight;
+    camera.updateProjectionMatrix();
+
+    // Redimensionne le renderer
+    renderer.setSize(window.innerWidth, window.innerHeight);
+    renderer.setPixelRatio(window.devicePixelRatio);
+
+    // Redessine la scène pour s'assurer qu'elle occupe tout l'espace disponible
     renderer.render(scene, camera);
 }
 

@@ -141,12 +141,12 @@
         .close-doors .door-right {
             transform: translateX(0);
         }
-        
+
         .locked {
             background-color: #ccc; /* Couleur pour indiquer que le niveau est verrouillé */
             cursor: not-allowed;
         }
-        
+
         .reset-button {
             position: absolute;
             top: 20px;
@@ -161,7 +161,7 @@
             transition: background-color 0.3s, transform 0.2s;
             box-shadow: 0 8px 15px rgba(0, 0, 0, 0.1);
         }
-        
+
         .reset-button:hover {
             background-color: #FF6347;
             transform: scale(1.05);
@@ -172,7 +172,7 @@
             color: white;
             cursor: default;
         }
-        
+
     </style>
 </head>
 <body>
@@ -181,7 +181,7 @@
     <a href="{% url 'page_accueil' %}" class="back-button">Retour</a>
 
     <button id="reset-button" class="reset-button"> Reinitialiser la progression</button>
-    
+
     <h1>Carte des missions</h1>
 
     <div class="mission-map">

@@ -27,17 +27,17 @@ client = MongoClient(MONGO_HOST, MONGO_PORT)
 db1 = client['joueur']
 collection_user1 = db1['jeu']"""
 
+def avatar(request):
+    return render(request, 'website/avatar.html')
 
-def test(request):
-    return render(request, 'website/test.html')
+def niveau1(request):
+    return render(request, 'website/niveau1.html')
+
+def niveau2(request):
+    return render(request, 'website/niveau2.html')
 
 def techniques_apprentissage(request):
     return render(request, 'website/techniques_apprentissage.html')
-
-
-def game3d(request):
-    return render(request, 'website/game3d.html')
-
 
 def dashboard(request):
     # Vérifiez si l'utilisateur est connecté en vérifiant la session

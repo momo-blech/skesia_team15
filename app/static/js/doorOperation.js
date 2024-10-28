@@ -1,6 +1,7 @@
 // Définir une distance de seuil pour afficher l'indication
 const proximityThreshold = 3; // Ajustez cette distance pour déclencher l'affichage
 let isOperationVisible = false; // Indicateur pour vérifier si la boîte modale est ouverte
+let isNearDoor = false; // Indicateur pour vérifier la proximité de la porte
 
 // Générer une opération mathématique unique pour la session
 const num1 = Math.floor(Math.random() * 10) + 1;
@@ -11,8 +12,9 @@ const operationText = `${num1} + ${num2} = ?`;
 // Fonction principale pour vérifier la proximité et afficher l'indication
 function displayOperationHint(door, character) {
     const distance = door.position.distanceTo(character.position);
+    isNearDoor = distance < proximityThreshold;
 
-    if (distance < proximityThreshold && !isOperationVisible) {
+    if (isNearDoor && !isOperationVisible) {
         showHintOnDoor(door);
     } else {
         hideHint();
@@ -119,22 +121,6 @@ function hideOperationModal() {
     isOperationVisible = false;
 }
 
-// Fonction pour vérifier la réponse du joueur
-function checkAnswer() {
-    const answerInput = document.getElementById("answerInput");
-    const playerAnswer = parseInt(answerInput.value, 10);
-
-    if (playerAnswer === correctAnswer) {
-        hideOperationModal();
-        showSuccessAnimation(); // Affiche l'animation de succès
-        openDoorAnimation(); // Lance l'animation d'ouverture de la porte
-    } else {
-        alert("Mauvaise réponse, essayez encore !");
-        answerInput.value = ""; // Effacer la réponse pour une nouvelle tentative
-    }
-}
-
-// Fonction pour afficher une animation de succès
 function showSuccessAnimation() {
     let successDiv = document.createElement("div");
     successDiv.textContent = "Bonne réponse !";
@@ -168,10 +154,9 @@ function showSuccessAnimation() {
     }, 2000);
 }
 
-// Fonction pour animer l'ouverture de la porte
 function openDoorAnimation() {
     const doorOpenDuration = 2000; // Durée de l'animation en ms
-    const initialPosition = door.position.z;
+    const initialPosition = door2.position.z; // Utiliser door2 pour la position de la porte
     const finalPosition = initialPosition + 3; // Distance de déplacement
 
     let startTime = null;
@@ -182,7 +167,7 @@ function openDoorAnimation() {
         const progress = Math.min(elapsed / doorOpenDuration, 1);
 
         // Déplacer la porte le long de l'axe Z
-        door.position.z = initialPosition + progress * (finalPosition - initialPosition);
+        door2.position.z = initialPosition + progress * (finalPosition - initialPosition);
 
         if (progress < 1) {
             requestAnimationFrame(animateDoorOpening);
@@ -192,14 +177,25 @@ function openDoorAnimation() {
     requestAnimationFrame(animateDoorOpening);
 }
 
+// Fonction pour vérifier la réponse du joueur
+function checkAnswer() {
+    const answerInput = document.getElementById("answerInput");
+    const playerAnswer = parseInt(answerInput.value, 10);
+
+    if (playerAnswer === correctAnswer) {
+        hideOperationModal();
+        showSuccessAnimation(); // Affiche l'animation de succès
+        openDoorAnimation(); // Lance l'animation d'ouverture de la porte
+    } else {
+        alert("Mauvaise réponse, essayez encore !");
+        answerInput.value = ""; // Effacer la réponse pour une nouvelle tentative
+    }
+}
+
 // Écouteur d'événements pour basculer ou soumettre la boîte modale avec "F" et soumettre avec "Enter"
 document.addEventListener('keydown', (event) => {
-    if (event.key === 'f') {
-        if (!isOperationVisible) {
-            showOperationModal(); // Affiche la boîte modale
-        } else {
-            checkAnswer(); // Vérifie la réponse si la boîte modale est déjà ouverte
-        }
+    if (event.key === 'f' && isNearDoor) {
+        toggleOperationModal();
     } else if (event.key === 'Enter' && isOperationVisible) {
         checkAnswer(); // Vérifie la réponse si la boîte modale est ouverte
     }

@@ -11,9 +11,9 @@ document.querySelectorAll('.mission-circle').forEach(circle => {
 
         // Redirection après la fin de l'animation des portes
         setTimeout(() => {
-            window.location.href = "/game3d?mission=" + mission;
-            }, 1000); // Délai de 1 seconde pour correspondre à la durée de l'animation
-    });
+    window.location.href = '/niveau1';
+}, 1000); // Délai de 1 seconde pour correspondre à la durée de l'animation
+
 });
 
 document.addEventListener('DOMContentLoaded', () => {
